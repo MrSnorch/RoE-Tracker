@@ -1,14 +1,12 @@
 # ROE Userscript — Installation Guide
 
-ROE is a Tampermonkey userscript that adds spawn tracking, an inventory/quickbar sync, a minimap overlay, and other tools on top of the Roots of Embervault browser game. This build auto-loads a pre-explored minimap (maze, mines, mines lower, forest) from this repo the first time it runs.
+ROE is a Tampermonkey userscript that adds spawn tracking, an inventory/quickbar sync, a minimap overlay, and other tools on top of the Embervault (Rise of Empires) browser game. This build auto-loads a pre-explored minimap (maze, mines, mines lower, forest) from this repo the first time it runs.
 
 ## Quick install (one click)
 
 If you already have Tampermonkey installed, just click the link below — Tampermonkey will detect the `.user.js` file and open its install prompt automatically:
 
-**[➡️ Install ROE](https://raw.githubusercontent.com/<user>/<repo>/main/ROE-7.44.0_user.js)**
-
-*(Replace `<user>/<repo>` in this link with your actual GitHub username/repo before sharing it.)*
+**[➡️ Install ROE](https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.44.0_user.js)**
 
 If you don't have Tampermonkey yet, follow the steps below first.
 

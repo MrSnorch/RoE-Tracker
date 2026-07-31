@@ -9,6 +9,8 @@
 // @connect      coinmarketcap.com
 // @connect      api.coinmarketcap.com
 // @connect      raw.githubusercontent.com
+// @downloadURL  https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.44.0_user.js
+// @updateURL    https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.44.0_user.js
 // ==/UserScript==
 
 (function () {
@@ -26,8 +28,8 @@
   // pass, so re-walking your own trail later is never clobbered.
   //
   // EDIT THIS URL to point at the raw maps.json in your GitHub repo, e.g.
-  // https://raw.githubusercontent.com/<user>/<repo>/main/maps.json
-  const ROE_SEED_MAPS_URL = 'https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/refs/heads/main/maps.json';
+  // https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/maps.json
+  const ROE_SEED_MAPS_URL = 'https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/maps.json';
 
   const ROE_SEED_KEY_MAP = [
     ['maze',       { trail: 'roeMazeTrail',       entries: 'roeMazeEntries', stairs: 'roeMazeStairs', stairsBlacklist: 'roeMazeStairsBlacklist' }],
