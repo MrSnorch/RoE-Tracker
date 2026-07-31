@@ -27,7 +27,7 @@
   //
   // EDIT THIS URL to point at the raw maps.json in your GitHub repo, e.g.
   // https://raw.githubusercontent.com/<user>/<repo>/main/maps.json
-  const ROE_SEED_MAPS_URL = 'https://raw.githubusercontent.com/<user>/<repo>/main/maps.json';
+  const ROE_SEED_MAPS_URL = 'https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/refs/heads/main/maps.json';
 
   const ROE_SEED_KEY_MAP = [
     ['maze',       { trail: 'roeMazeTrail',       entries: 'roeMazeEntries', stairs: 'roeMazeStairs', stairsBlacklist: 'roeMazeStairsBlacklist' }],
