@@ -2,14 +2,6 @@
 
 ROE is a Tampermonkey userscript that adds spawn tracking, an inventory/quickbar sync, a minimap overlay, and other tools on top of the Roots of Embervault browser game. This build auto-loads a pre-explored minimap (maze, mines, mines lower, forest) from this repo the first time it runs.
 
-## Quick install (one click)
-
-If you already have Tampermonkey installed, just click the link below — Tampermonkey will detect the `.user.js` file and open its install prompt automatically:
-
-**[➡️ Install ROE](https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.44.0_user.js)**
-
-If you don't have Tampermonkey yet, follow the steps below first.
-
 ## Requirements
 
 - A desktop browser: Chrome, Firefox, Edge, or Brave
@@ -22,15 +14,28 @@ If you don't have Tampermonkey yet, follow the steps below first.
 
 ## 2. Install the script
 
-**Easiest way:** just use the one-click link at the top of this page.
+Clicking the raw link on GitHub directly will usually just **download** the file instead of installing it — that's normal, it just means the browser downloaded it before Tampermonkey could intercept it. Use one of the two methods below instead.
 
-**Manual way** (if the link above doesn't trigger the install prompt for some reason):
+### Method A — Create a new script and paste the code (most reliable)
 
-1. In this repository, open `ROE-7.44.0_user.js`.
-2. Click the **Raw** button on GitHub to open the raw file.
-3. Tampermonkey should automatically detect the `.user.js` file and open its installation prompt.
-   - If it doesn't open automatically, copy the raw URL and paste it into a new browser tab.
-4. Click **Install** (or **Reinstall** if you're updating an existing copy) in the Tampermonkey prompt.
+1. On GitHub, open `ROE-7.44.0_user.js`, click **Raw**, then select all the text and copy it (**Ctrl+A**, **Ctrl+C** / **Cmd+A**, **Cmd+C**).
+   - If the raw page downloaded instead of showing text, open the downloaded file in any text editor, select all, and copy.
+2. Click the Tampermonkey icon in your browser toolbar.
+3. Click **Dashboard**.
+4. Click the **+** tab (or **Create a new script...**).
+5. Select all the placeholder code Tampermonkey put in the editor (**Ctrl+A**) and delete it.
+6. Paste the script you copied in step 1 (**Ctrl+V**).
+7. Press **Ctrl+S** (or **Cmd+S**) to save, or use the editor's **File → Save** menu.
+8. The script now appears in your Tampermonkey Dashboard as **ROE**, enabled by default.
+
+### Method B — Install from the downloaded file (drag & drop)
+
+1. On GitHub, open `ROE-7.44.0_user.js` and click **Raw** — this downloads the file to your computer (e.g. into your Downloads folder).
+2. Open the Tampermonkey **Dashboard** (click the Tampermonkey icon → **Dashboard**).
+3. Drag the downloaded `.user.js` file from your file explorer/Finder and drop it directly onto the Dashboard page.
+4. Tampermonkey will open the install prompt — click **Install** to confirm.
+
+Either method installs the same script — pick whichever works smoothly in your browser.
 
 ## 3. Confirm it's active
 
@@ -40,8 +45,8 @@ If you don't have Tampermonkey yet, follow the steps below first.
 
 ## Updating
 
-- If the script has `@downloadURL` / `@updateURL` configured, Tampermonkey will check for updates automatically (Tampermonkey Dashboard → Utilities → **Check for userscript updates**).
-- Otherwise, repeat step 2 above with the latest raw file whenever a new version is released.
+- If the script has `@downloadURL` / `@updateURL` configured, Tampermonkey will check for updates automatically (Tampermonkey Dashboard → the script's **Check for userscript updates** option, or **Utilities → Check for userscript updates** if available in your version).
+- Otherwise, repeat step 2 above (Method A or B) with the latest code/file whenever a new version is released — installing over an existing script with the same `@name`/`@namespace` will update it in place.
 
 ## Notes
 
