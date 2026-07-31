@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name         ROE
 // @namespace    roe.spawntracker
-// @version      7.44.0
-// @description  Tracks mob spawns; auto-syncs inventory on quickbar desync, resources and marketplace listings. Toolbar-only mode: clicking tab buttons opens/closes floating panels. Panel positions saved across sessions. Batch notifications: multiple ready alerts collapsed into one summary toast. Auto-loads a pre-explored minimap (maze/mines/forest) from GitHub on first run.
+// @version      7.45.0
+// @description  Tracks mob spawns; auto-syncs inventory on quickbar desync, resources and marketplace listings. Toolbar-only mode: clicking tab buttons opens/closes floating panels. Panel positions saved across sessions. Batch notifications: multiple ready alerts collapsed into one summary toast. Auto-loads a pre-explored minimap (maze/mines/forest) from GitHub on first run. Fully English UI.
 // @match        https://embervault.ruyui.com/*
 // @grant        GM_xmlhttpRequest
 // @grant        unsafeWindow
 // @connect      coinmarketcap.com
 // @connect      api.coinmarketcap.com
 // @connect      raw.githubusercontent.com
-// @downloadURL  https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.44.0_user.js
-// @updateURL    https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.44.0_user.js
+// @downloadURL  https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.45.0_user.js
+// @updateURL    https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/ROE-7.45.0_user.js
 // ==/UserScript==
 
 (function () {
@@ -26,9 +26,6 @@
   // ROE_SEED_KEY_MAP below). Never overwrites a key the user already has
   // data in, and never runs again after the first successful (or attempted)
   // pass, so re-walking your own trail later is never clobbered.
-  //
-  // EDIT THIS URL to point at the raw maps.json in your GitHub repo, e.g.
-  // https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/maps.json
   const ROE_SEED_MAPS_URL = 'https://raw.githubusercontent.com/MrSnorch/RoE-Tracker/main/maps.json';
 
   const ROE_SEED_KEY_MAP = [
@@ -58,7 +55,7 @@
   (function seedBuiltInMapsFromGitHub() {
     try {
       if (localStorage.getItem('roeSeedApplied') === '1') return;
-      if (!ROE_SEED_MAPS_URL || ROE_SEED_MAPS_URL.indexOf('<user>') !== -1) return; // not configured yet
+      if (!ROE_SEED_MAPS_URL) return; // not configured yet
       if (typeof GM_xmlhttpRequest === 'undefined') return;
       GM_xmlhttpRequest({
         method: 'GET',
@@ -3626,9 +3623,9 @@
   function loadPanelState()  { return null; }
   function clearPanelState() { try { localStorage.removeItem(PANEL_STORAGE_KEY); } catch (e) {} }
 
-  // ─── Experimental tabs (Market/Chest/Log/QB) — gated behind a warning ────
+  // ─── Experimental tabs (Log) — gated behind a warning ────
   const EXPERIMENTAL_KEY      = 'roeSpawnMonitor_experimentalEnabled';
-  const EXPERIMENTAL_TAB_KEYS = ['market', 'chest', 'log'];
+  const EXPERIMENTAL_TAB_KEYS = ['log'];
   function _loadExperimentalEnabled() {
     try { return localStorage.getItem(EXPERIMENTAL_KEY) === '1'; } catch (_) { return false; }
   }
@@ -3875,7 +3872,7 @@
         <button id="roePinBtn"  title="Pin / Unpin panel" style="${btnStyle('#222')}padding:2px 6px;font-size:12px;">📌</button>
         <button id="roeEyeBtn"  title="Toggle auto-hide" style="${btnStyle('#222')}padding:2px 6px;font-size:12px;opacity:1;">👁️</button>
         <button id="roeMagnetBtn" title="Stick floating panels to main panel (move all together)" style="${btnStyle('#222')}padding:2px 6px;font-size:12px;opacity:1;">🧲</button>
-        <button id="roeExperimentalBtn" title="Toggle experimental tabs: Market, Chest, Log" style="${btnStyle('#222')}padding:2px 6px;font-size:11px;">🧪 Experimental</button>
+        <button id="roeExperimentalBtn" title="Toggle experimental tabs: Log" style="${btnStyle('#222')}padding:2px 6px;font-size:11px;">🧪 Experimental</button>
       </div>
     </div>
     <button id="roeMinBtn"  style="${btnStyle('#222')}padding:2px 6px;">▼</button>
@@ -4162,7 +4159,7 @@
   // Enemy markers: all alive mobs in the zone are plotted by default now
   // (previously this was an opt-in toggle via the 👾 header button — that
   // button was removed and per-type visibility moved into the ⚙️ settings
-  // popover's "Мобы на карте" list instead).
+  // popover's "Mobs On Map" list instead).
   const _mapShowAllMobs = true;
 
   // ─── Manual map viewing mode ───────────────────────────────────────────────
@@ -4221,7 +4218,7 @@
       </select>
     </div>
     <div id="roeMazeMapClearPop" style="display:none;position:absolute;right:4px;top:26px;z-index:100010;background:#181828;border:1px solid #444;border-radius:6px;padding:8px 10px;font-size:11px;color:#ccc;text-align:left;width:150px;box-shadow:0 4px 16px rgba(0,0,0,0.6);">
-      <div style="color:#ff8080;font-weight:bold;margin-bottom:6px;">🗑️ Какую карту очистить?</div>
+      <div style="color:#ff8080;font-weight:bold;margin-bottom:6px;">🗑️ Which map to clear?</div>
       <div id="roeMazeMapClearMaze"       style="cursor:pointer;padding:4px 2px;border-radius:3px;">🗺️ Mines Full</div>
       <div id="roeMazeMapClearMines"      style="cursor:pointer;padding:4px 2px;border-radius:3px;">⛏️ Mines</div>
       <div id="roeMazeMapClearMinesLower" style="cursor:pointer;padding:4px 2px;border-radius:3px;">⛏️ Mines Lower</div>
@@ -4229,8 +4226,8 @@
       <div id="roeMazeMapClearCustomList"></div>
     </div>
     <div id="roeMazeMapExportPop" style="display:none;position:absolute;right:180px;top:26px;z-index:100011;background:#181828;border:1px solid #444;border-radius:6px;padding:8px 10px;font-size:11px;color:#ccc;text-align:left;width:170px;box-shadow:0 4px 16px rgba(0,0,0,0.6);">
-      <div style="color:#7bc6ff;font-weight:bold;margin-bottom:6px;">⬇️ Какую карту экспортировать?</div>
-      <div id="roeMazeMapExportAll"        style="cursor:pointer;padding:4px 2px;border-radius:3px;">📦 Все карты</div>
+      <div style="color:#7bc6ff;font-weight:bold;margin-bottom:6px;">⬇️ Which map to export?</div>
+      <div id="roeMazeMapExportAll"        style="cursor:pointer;padding:4px 2px;border-radius:3px;">📦 All Maps</div>
       <div id="roeMazeMapExportMaze"       style="cursor:pointer;padding:4px 2px;border-radius:3px;">🗺️ Mines Full</div>
       <div id="roeMazeMapExportMines"      style="cursor:pointer;padding:4px 2px;border-radius:3px;">⛏️ Mines</div>
       <div id="roeMazeMapExportMinesLower" style="cursor:pointer;padding:4px 2px;border-radius:3px;">⛏️ Mines Lower</div>
@@ -4238,7 +4235,7 @@
       <div id="roeMazeMapExportCustomList"></div>
     </div>
     <div id="roeMazeMapSettingsPop" style="display:none;position:absolute;right:4px;top:26px;z-index:100010;background:#181828;border:1px solid #444;border-radius:6px;padding:8px 10px;font-size:11px;color:#ccc;text-align:left;width:170px;box-shadow:0 4px 16px rgba(0,0,0,0.6);">
-      <div style="color:#7b8fff;font-weight:bold;margin-bottom:6px;">🗺️ Настройки карты</div>
+      <div style="color:#7b8fff;font-weight:bold;margin-bottom:6px;">🗺️ Map Settings</div>
       <div style="display:flex;gap:6px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #333;">
         <span id="roeMazeMapExport" title="Export map" style="cursor:pointer;opacity:.7;flex:1;text-align:center;">⬇️ Export</span>
         <span id="roeMazeMapImport" title="Import map" style="cursor:pointer;opacity:.7;flex:1;text-align:center;">⬆️ Import</span>
@@ -4246,64 +4243,64 @@
       <label style="display:flex;align-items:center;gap:5px;cursor:pointer;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #333;">
         <input type="checkbox" id="roeMazeMapEditMode" style="margin:0;">✏️ Edit Mode
       </label>
-      <label style="display:block;margin-bottom:6px;">Толщина линии
+      <label style="display:block;margin-bottom:6px;">Line Thickness
         <select id="roeMazeMapThickness" style="width:100%;margin-top:2px;background:#0d0d0d;color:#eee;border:1px solid #333;border-radius:3px;font-size:11px;padding:2px;">
-          <option value="0.6">Тонкая</option>
-          <option value="1">Обычная</option>
-          <option value="1.5">Толстая</option>
-          <option value="2.2">Очень толстая</option>
+          <option value="0.6">Thin</option>
+          <option value="1">Normal</option>
+          <option value="1.5">Thick</option>
+          <option value="2.2">Very Thick</option>
         </select>
       </label>
-      <label style="display:block;margin-bottom:6px;">Радиус тропы
-        <select id="roeMazeMapRadiusScale" title="Уменьшает сам круг под точкой тропы, а не только размытие поверх него — сужает тропу физически, но при низких значениях диагональные проходы могут рваться на отдельные точки." style="width:100%;margin-top:2px;background:#0d0d0d;color:#eee;border:1px solid #333;border-radius:3px;font-size:11px;padding:2px;">
-          <option value="1">Полный (без разрывов)</option>
-          <option value="0.75">Узкий</option>
-          <option value="0.55">Очень узкий</option>
+      <label style="display:block;margin-bottom:6px;">Trail Radius
+        <select id="roeMazeMapRadiusScale" title="Shrinks the circle under each trail point itself, not just the blur on top of it — narrows the trail physically, but at low values diagonal passages may break up into separate dots." style="width:100%;margin-top:2px;background:#0d0d0d;color:#eee;border:1px solid #333;border-radius:3px;font-size:11px;padding:2px;">
+          <option value="1">Full (No Gaps)</option>
+          <option value="0.75">Narrow</option>
+          <option value="0.55">Very Narrow</option>
         </select>
       </label>
-      <label style="display:block;margin-bottom:6px;">Частота отрисовки
+      <label style="display:block;margin-bottom:6px;">Render Rate
         <select id="roeMazeMapFps" style="width:100%;margin-top:2px;background:#0d0d0d;color:#eee;border:1px solid #333;border-radius:3px;font-size:11px;padding:2px;">
-          <option value="10">Экономия (10 fps)</option>
-          <option value="20">Обычная (20 fps)</option>
-          <option value="30">Плавная (30 fps)</option>
-          <option value="60">Максимум (60 fps)</option>
+          <option value="10">Battery Saver (10 fps)</option>
+          <option value="20">Normal (20 fps)</option>
+          <option value="30">Smooth (30 fps)</option>
+          <option value="60">Maximum (60 fps)</option>
         </select>
       </label>
-      <label style="display:block;margin-bottom:6px;">Качество тропы
+      <label style="display:block;margin-bottom:6px;">Trail Quality
         <select id="roeMazeMapBakeScale" style="width:100%;margin-top:2px;background:#0d0d0d;color:#eee;border:1px solid #333;border-radius:3px;font-size:11px;padding:2px;">
-          <option value="6">Высокое</option>
-          <option value="3">Среднее</option>
-          <option value="1.5">Низкое (экономия FPS)</option>
+          <option value="6">High</option>
+          <option value="3">Medium</option>
+          <option value="1.5">Low (Saves FPS)</option>
         </select>
       </label>
       <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
-        <input type="checkbox" id="roeMazeMapGlow" style="margin:0;">Свечение по краю
+        <input type="checkbox" id="roeMazeMapGlow" style="margin:0;">Edge Glow
       </label>
       <label style="display:flex;align-items:center;gap:5px;cursor:pointer;margin-top:4px;">
-        <input type="checkbox" id="roeMazeMapSmoothing" style="margin:0;">Сглаживание тропы
+        <input type="checkbox" id="roeMazeMapSmoothing" style="margin:0;">Trail Smoothing
       </label>
       <label style="display:flex;align-items:center;gap:5px;cursor:pointer;margin-top:4px;">
-        <input type="checkbox" id="roeMazeMapGlitch" style="margin:0;">Глитч на пустых картах
+        <input type="checkbox" id="roeMazeMapGlitch" style="margin:0;">Glitch On Empty Maps
       </label>
       <label style="display:flex;align-items:center;gap:5px;cursor:pointer;margin-top:4px;">
-        <input type="checkbox" id="roeMazeMapStairsPreview" style="margin:0;">Превью лестницы заранее
+        <input type="checkbox" id="roeMazeMapStairsPreview" style="margin:0;">Preview Stairs Early
       </label>
       <div style="margin-top:8px;border-top:1px solid #333;padding-top:6px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <span>Ресурсы на карте</span>
+          <span>Resources On Map</span>
           <span>
-            <span id="roeMazeMapResAll" style="cursor:pointer;color:#7b8fff;">все</span> /
-            <span id="roeMazeMapResNone" style="cursor:pointer;color:#7b8fff;">нет</span>
+            <span id="roeMazeMapResAll" style="cursor:pointer;color:#7b8fff;">all</span> /
+            <span id="roeMazeMapResNone" style="cursor:pointer;color:#7b8fff;">none</span>
           </span>
         </div>
         <div id="roeMazeMapResList" style="max-height:120px;overflow-y:auto;"></div>
       </div>
       <div style="margin-top:8px;border-top:1px solid #333;padding-top:6px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <span>Мобы на карте</span>
+          <span>Mobs On Map</span>
           <span>
-            <span id="roeMazeMapMobAll" style="cursor:pointer;color:#7b8fff;">все</span> /
-            <span id="roeMazeMapMobNone" style="cursor:pointer;color:#7b8fff;">нет</span>
+            <span id="roeMazeMapMobAll" style="cursor:pointer;color:#7b8fff;">all</span> /
+            <span id="roeMazeMapMobNone" style="cursor:pointer;color:#7b8fff;">none</span>
           </span>
         </div>
         <div id="roeMazeMapMobList" style="max-height:120px;overflow-y:auto;"></div>
@@ -4320,7 +4317,7 @@
       <span id="roeMazeMapCutWalkMode" title="Walk mode: while active, cuts are dropped automatically at your feet as you walk instead of needing manual clicks — useful for tracing out a narrow passage." style="cursor:pointer;opacity:.7;">🚶✂️</span>
       <span id="roeMazeMapCutEraseMode" title="Area-erase cuts: click a spot to remove every cut point within a radius of it — handy for clearing a patch of walk-cut points at once instead of one by one." style="cursor:pointer;opacity:.7;">🧹✂️</span>
       <span id="roeMazeMapClear" title="Clear map" style="cursor:pointer;opacity:.7;">🗑️</span>
-      <span id="roeMazeMapAddZone" title="Начать отслеживать текущую зону как новую мини-карту" style="cursor:pointer;opacity:.7;">➕</span>
+      <span id="roeMazeMapAddZone" title="Start tracking the current zone as a new minimap" style="cursor:pointer;opacity:.7;">➕</span>
     </div>
     <div id="roeMazeMapResizeE" title="Drag to resize width" style="position:absolute;right:0;top:50%;width:6px;height:36px;margin-top:-18px;cursor:ew-resize;user-select:none;"></div>
     <div id="roeMazeMapResizeS" title="Drag to resize height" style="position:absolute;left:50%;bottom:0;width:36px;height:6px;margin-left:-18px;cursor:ns-resize;user-select:none;"></div>
@@ -4573,7 +4570,7 @@
     _customMapZones.forEach(zone => {
       const row = document.createElement('div');
       row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:4px 2px;border-radius:3px;gap:6px;';
-      row.innerHTML = `<span style="cursor:pointer;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">📍 ${zone}</span><span title="Перестать отслеживать" style="cursor:pointer;opacity:.7;flex:0 0 auto;">✖</span>`;
+      row.innerHTML = `<span style="cursor:pointer;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">📍 ${zone}</span><span title="Stop tracking" style="cursor:pointer;opacity:.7;flex:0 0 auto;">✖</span>`;
       row.addEventListener('mouseenter', () => { row.style.background = '#2a2a3d'; });
       row.addEventListener('mouseleave', () => { row.style.background = ''; });
       row.firstElementChild.addEventListener('click', (e) => {
@@ -4650,7 +4647,7 @@
 
     const exportPop = mazeMap.querySelector('#roeMazeMapExportPop');
     const exportOptions = [
-      ['#roeMazeMapExportAll',        null,         '📦 Все карты'],
+      ['#roeMazeMapExportAll',        null,         '📦 All Maps'],
       ['#roeMazeMapExportMaze',       'maze',       'Mines Full'],
       ['#roeMazeMapExportMines',      'mines',      'Mines'],
       ['#roeMazeMapExportMinesLower', 'minesLower', 'Mines Lower'],
@@ -5015,7 +5012,7 @@
     addZoneBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (!_currentZone || !_playerPos) {
-        notifyTrack(null, '📍 Позиция игрока ещё не известна');
+        notifyTrack(null, '📍 Player position not known yet');
         return;
       }
       const alreadyTracked = MAZE_ZONES.has(_currentZone) || FOREST_ZONES.has(_currentZone) || _isCustomMapZone(_currentZone);
@@ -5026,7 +5023,7 @@
       _populateCustomExportList();
       _syncMapModeUI();
       _resetMapViewSnap();
-      notifyTrack(null, alreadyTracked ? `🗺️ ${zone} уже отслеживается` : `🗺️ Добавлена новая карта: ${zone}`);
+      notifyTrack(null, alreadyTracked ? `🗺️ ${zone} is already being tracked` : `🗺️ Added new map: ${zone}`);
     });
 
     // Toggle: clicking the canvas while active removes only the staircase
@@ -5344,7 +5341,7 @@
           // waypoint's label plus a hint that clicking clears it, since
           // that's not otherwise obvious just from the pointer cursor.
           _hoveredMarker = null;
-          _hoverTip.innerHTML = `<b>${escapeHtml(_pointerTarget.label || '📍 Waypoint')}</b><br><span style="color:#999;">клик — снять метку</span>`;
+          _hoverTip.innerHTML = `<b>${escapeHtml(_pointerTarget.label || '📍 Waypoint')}</b><br><span style="color:#999;">click — remove marker</span>`;
           _hoverTip.style.display = 'block';
           const tipWidth = _hoverTip.offsetWidth;
           const tipHeight = _hoverTip.offsetHeight;
@@ -5364,16 +5361,16 @@
           if (overDropArrow.kind === 'drop') {
             const isRune = n.meta.isRune;
             titleHtml = `<b>${isRune ? '💠 Runestone drop' : '📦 Item drop'}</b>`;
-            clickHint = 'клик — проложить маршрут';
+            clickHint = 'click — set route';
           } else if (overDropArrow.kind === 'death') {
             titleHtml = `<b>💀 Death spot</b>`;
-            clickHint = 'клик — проложить маршрут';
+            clickHint = 'click — set route';
           } else if (overDropArrow.kind === 'trackedMob') {
             titleHtml = `<b>${escapeHtml(n.meta.label)}</b>`;
-            clickHint = 'клик — проложить маршрут';
+            clickHint = 'click — set route';
           } else { // 'pin' — the manual waypoint or death-drop marker itself
             titleHtml = `<b>${escapeHtml(n.meta.label)}</b>`;
-            clickHint = 'уже выбрано как цель';
+            clickHint = 'already set as target';
           }
           _hoveredMarker = null;
           _hoverTip.innerHTML = titleHtml
@@ -5543,7 +5540,7 @@
         const group = _activeMapGroup();
         if (!group) return;
         if (group !== 'maze' && group !== 'mines' && group !== 'minesLower') {
-          notifyTrack(null, '🪜 У этой карты нет чёрного списка лестниц');
+          notifyTrack(null, '🪜 This map has no staircase blacklist');
           return;
         }
         const canvas = e.target;
@@ -5562,7 +5559,7 @@
           if (d < nearestDist) { nearestDist = d; nearestIdx = i; }
         });
         if (nearestIdx === -1 || nearestDist > 12) {
-          notifyTrack(null, '🪜 Рядом нет удалённых лестниц для восстановления');
+          notifyTrack(null, '🪜 No deleted staircases nearby to restore');
           return;
         }
         const [restored] = _mazeStairsBlacklist.splice(nearestIdx, 1);
@@ -6013,13 +6010,13 @@
   // but a smaller radius reopens REAL gaps on diagonal steps (adjacent
   // diagonal cells are ~1.4x further apart than orthogonal ones — see
   // CELL_CIRCLE_RADIUS_FACTOR), not just a leaner look; that's what
-  // produced the disconnected diamond dots on "Мелкие". So the circle
+  // produced the disconnected diamond dots on "Narrow". So the circle
   // radius now always stays at full coverage (guaranteed connectivity),
   // and thickness instead scales how hard the smoothing pass erodes the
   // blurred silhouette afterward: a higher threshold keeps only pixels
   // deep inside the blur, shrinking the visible line without breaking
   // the connections between cells that full-radius circles guarantee.
-  // 135 (~50%) is the "Обычные" anchor point (see _paintTrailRange's
+  // 135 (~50%) is the "Normal" anchor point (see _paintTrailRange's
   // TRAIL_SMOOTH_THRESHOLD comment for why 50% avoids outward puffing).
   function _trailSmoothThreshold() {
     return Math.round(Math.min(220, Math.max(30, 135 - (_minimapSettings.thickness - 1) * 100)));
@@ -6028,7 +6025,7 @@
     const ctx = state.canvas.getContext('2d');
     // Always the smallest radius that fully covers a cell (see
     // CELL_CIRCLE_RADIUS_FACTOR above) — guarantees no real gaps even on
-    // diagonal steps, at radiusScale 1. Lowering ⚙️ "Радиус тропы" shrinks
+    // diagonal steps, at radiusScale 1. Lowering ⚙️ "Trail Radius" shrinks
     // this floor itself (not just the blur erosion _trailSmoothThreshold
     // does on top of it) — physically narrows the trail, which is the only
     // way to stop two nearby parallel passes (e.g. walking a loop around a
@@ -6174,7 +6171,7 @@
     // scratch canvas, then composited in blurred, giving explored territory
     // a soft outer edge. Only the newly-added range gets (re)painted onto
     // the scratch each call, same as the main incremental painter.
-    // Skippable via settings (⚙️ → "Свечение") — the blur composite is the
+    // Skippable via settings (⚙️ → "Edge Glow") — the blur composite is the
     // single most expensive part of a paint call, so turning it off is the
     // main perf lever for low-end machines / huge explored maps.
     if (_minimapSettings.glow) {
@@ -8061,7 +8058,7 @@
       });
     });
 
-    // ─── Experimental button: gates Market/Chest/Log/QB tabs ───────────
+    // ─── Experimental button: gates the Log tab ───────────
     const experimentalBtn = document.getElementById('roeExperimentalBtn');
     function _applyExperimentalBtnState() {
       if (!experimentalBtn) return;
@@ -11951,7 +11948,7 @@
         return `[${te.zone}] ${name}`;
       });
       const note = new Notification('ROE Spawn Tracker', {
-        body: `🔔 ${spawnItems.length} объектов готово:\n${lines.join('\n')}`,
+        body: `🔔 ${spawnItems.length} items ready:\n${lines.join('\n')}`,
         tag:  'roe-track-batch'
       });
       note.onclick = () => { window.focus(); note.close(); };
@@ -11985,7 +11982,7 @@
       transition:opacity 0.5s;pointer-events:none;line-height:1.7;
     `;
     toast.innerHTML =
-      `<div style="color:#9cf;font-size:11px;margin-bottom:4px">🔔 ${spawnItems.length} объектов готово:</div>` +
+      `<div style="color:#9cf;font-size:11px;margin-bottom:4px">🔔 ${spawnItems.length} items ready:</div>` +
       lines.join('<br>');
     _trackToastOffset += Math.min(200, 30 + spawnItems.length * 22);
     document.body.appendChild(toast);
